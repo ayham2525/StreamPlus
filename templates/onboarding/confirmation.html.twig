@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation{% endblock %}
+
+{% block body %}
+    <h1>Step 4: Confirmation</h1>
+
+    <h3>User Information</h3>
+    <p>Name: {{ user.name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Phone: {{ user.phoneNumber }}</p>
+    <p>Subscription Type: {{ user.subscriptionType }}</p>
+
+    {% if user.subscriptionType != 'free' %}
+        <h3>Address Information</h3>
+        <p>Address Line 1: {{ address.addressLine1 }}</p>
+        <p>Address Line 2: {{ address.addressLine2 }}</p>
+        <p>City: {{ address.city }}</p>
+        <p>Postal Code: {{ address.postalCode }}</p>
+        <p>State: {{ address.state }}</p>
+        <p>Country: {{ address.country }}</p>
+    {% endif %}
+
+    {% if user.subscriptionType == 'premium' %}
+        <h3>Payment Information</h3>
+        <p>Credit Card Number: {{ payment.creditCardNumber|slice(0, 4) ~ ' **** **** ****' }}</p>
+        <p>Expiration Date: {{ payment.formattedExpirationDate }}</p>
+    {% endif %}
+ 
+
+   
+{% endblock %}

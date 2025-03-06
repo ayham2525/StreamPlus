@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Payment Information{% endblock %}
+
+{% block body %}
+    <h1>Step 3: Payment Information</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                {{ form_start(form) }}
+                
+                <div class="form-group">
+                    <label for="{{ form.creditCardNumber.vars.id }}">Credit Card Number</label>
+                    {{ form_widget(form.creditCardNumber, {'attr': {'class': 'form-control', 'placeholder': 'Your Credit Card Number *'}}) }}
+                    <div class="invalid-feedback" id="creditCardNumberError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.expirationDate.vars.id }}">Expiration Date (MM/YY)</label>
+                    {{ form_widget(form.expirationDate, {'attr': {'class': 'form-control', 'placeholder': 'MM/YY'}}) }}
+                    <div class="invalid-feedback" id="expirationDateError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.cvv.vars.id }}">CVV</label>
+                    {{ form_widget(form.cvv, {'attr': {'class': 'form-control', 'placeholder': 'CVV *'}}) }}
+                    <div class="invalid-feedback" id="cvvError"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex justify-content-between">                        
+                        <a href="{{ path('address_info', { 'userId': user.id }) }}">
+                            <i class="fa fa-arrow-left"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-primary btnSubmit">
+                          Next <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to validate form fields
+            function validateForm() {
+                let isValid = true;
+
+                // Get form inputs
+                const creditCardNumber = document.querySelector('#{{ form.creditCardNumber.vars.id }}');
+                const expirationDate = document.querySelector('#{{ form.expirationDate.vars.id }}');
+                const cvv = document.querySelector('#{{ form.cvv.vars.id }}');
+
+                // Clear previous error messages
+                document.getElementById('creditCardNumberError').innerText = '';
+                document.getElementById('expirationDateError').innerText = '';
+                document.getElementById('cvvError').innerText = '';
+
+                // Validate Credit Card Number (Visa or MasterCard)
+                const cardRegex = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$/; // Visa or MasterCard
+                if (!creditCardNumber.value.trim()) {
+                    document.getElementById('creditCardNumberError').innerText = 'Credit Card Number is required.';
+                    isValid = false;
+                } else if (!cardRegex.test(creditCardNumber.value.trim())) {
+                    document.getElementById('creditCardNumberError').innerText = 'Please enter a valid Visa or MasterCard number.';
+                    isValid = false;
+                }
+
+                // Validate Expiration Date (MM/YY)
+                const expirationDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // MM/YY format
+                if (!expirationDate.value.trim()) {
+                    document.getElementById('expirationDateError').innerText = 'Expiration Date is required.';
+                    isValid = false;
+                } else if (!expirationDateRegex.test(expirationDate.value.trim())) {
+                    document.getElementById('expirationDateError').innerText = 'Please enter a valid expiration date (MM/YY).';
+                    isValid = false;
+                }
+
+                // Validate CVV (3 digits)
+                const cvvRegex = /^\d{3}$/; // 3 digits
+                if (!cvv.value.trim()) {
+                    document.getElementById('cvvError').innerText = 'CVV is required.';
+                    isValid = false;
+                } else if (!cvvRegex.test(cvv.value.trim())) {
+                    document.getElementById('cvvError').innerText = 'Please enter a valid 3-digit CVV.';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Attach event listeners
+            document.querySelector('.btnSubmit').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent form submission
+                if (validateForm()) {
+                    document.querySelector('form').submit(); // Submit the form if validation passes
+                }
+            });
+
+            // Attach blur events to inputs for instant validation
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('blur', () => {
+                    validateForm(); // Validate the form on blur (when the user clicks away)
+                });
+            });
+        });
+    </script>
+{% endblock %}

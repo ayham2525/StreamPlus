@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Information{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Step 1: User Information</h1>
+
+        {{ form_start(form) }}
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-6 form-group">
+                {{ form_row(form.name) }}
+                <div class="invalid-feedback" id="nameError"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 form-group">
+                {{ form_row(form.email) }}
+                <div class="invalid-feedback" id="emailError"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 form-group">
+                {{ form_row(form.phoneNumber) }}
+                <div class="invalid-feedback" id="phoneNumberError"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 form-group">
+                {{ form_row(form.subscriptionType) }}
+                <div class="invalid-feedback" id="subscriptionTypeError"></div>
+            </div>
+        </div>
+
+        <div class="text-center my-4">
+            <button type="submit" class="btn btn-primary" id="nextButton">
+              Next   <i class="fa fa-arrow-right"></i>
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to validate form fields
+            function validateForm() {
+                let isValid = true;
+
+                // Get form inputs
+                const name = document.querySelector('#{{ form.name.vars.id }}');
+                const email = document.querySelector('#{{ form.email.vars.id }}');
+                const phoneNumber = document.querySelector('#{{ form.phoneNumber.vars.id }}');
+                const subscriptionType = document.querySelector('#{{ form.subscriptionType.vars.id }}');
+
+                // Clear previous error messages
+                document.getElementById('nameError').innerText = '';
+                document.getElementById('emailError').innerText = '';
+                document.getElementById('phoneNumberError').innerText = '';
+                document.getElementById('subscriptionTypeError').innerText = '';
+
+                // Validate Name
+                if (!name.value.trim()) {
+                    document.getElementById('nameError').innerText = 'Name is required.';
+                    isValid = false;
+                }
+
+                // Validate Email
+                if (!email.value.trim()) {
+                    document.getElementById('emailError').innerText = 'Email is required.';
+                    isValid = false;
+                } else if (!/\S+@\S+\.\S+/.test(email.value.trim())) {
+                    document.getElementById('emailError').innerText = 'Please enter a valid email address.';
+                    isValid = false;
+                }
+
+                // Validate Phone Number
+                if (!phoneNumber.value.trim()) {
+                    document.getElementById('phoneNumberError').innerText = 'Phone number is required.';
+                    isValid = false;
+                } else if (!/^\d{10}$/.test(phoneNumber.value.trim())) {
+                    document.getElementById('phoneNumberError').innerText = 'Please enter a valid 10-digit phone number.';
+                    isValid = false;
+                }
+
+                // Validate Subscription Type
+                if (!subscriptionType.value.trim()) {
+                    document.getElementById('subscriptionTypeError').innerText = 'Please select a subscription type.';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Attach event listeners
+            document.getElementById('nextButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent form submission
+                if (validateForm()) {
+                    document.querySelector('form').submit(); // Submit the form if validation passes
+                }
+            });
+
+            // Attach blur events to inputs for instant validation
+            document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('blur', () => {
+                    validateForm(); // Validate the form on blur (when the user clicks away)
+                });
+            });
+        });
+    </script>
+{% endblock %}

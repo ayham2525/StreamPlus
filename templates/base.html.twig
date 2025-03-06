@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Onboarding{% endblock %}</title>
+    
+    <!-- Include Bootstrap 4 CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    {% block stylesheets %}
+        <style>
+            .invalid-feedback {
+                color: red;
+                font-size: 0.875em;
+                margin-top: 0.25em;
+                display: block;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    <div class="container mt-5">
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- Include jQuery (Bootstrap 4 requires jQuery) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- Include Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

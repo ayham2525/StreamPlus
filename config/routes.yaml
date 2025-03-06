@@ -1,0 +1,20 @@
+controllers:
+    resource: '../src/Controller/'
+    type: attribute
+
+user_info:
+    path: /user-info
+    controller: App\Controller\OnboardingController::userInfo
+
+address_info:
+    path: /address-info/{userId}
+    controller: App\Controller\OnboardingController::addressInfo
+
+payment_info:
+    path: /payment-info/{userId}
+    controller: App\Controller\OnboardingController::paymentInfo
+
+confirmation:
+    path: /confirmation/{userId}
+    controller: App\Controller\OnboardingController::confirmation
+ 

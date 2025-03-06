@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Address Information{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Step 2: Address Information</h1>
+
+        {{ form_start(form) }}
+        
+        <div class="row">
+            <!-- Address Line 1 -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.addressLine1.vars.id }}">Address Line 1</label>
+                {{ form_widget(form.addressLine1, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="addressLine1Error"></div>
+            </div>
+
+            <!-- Address Line 2 -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.addressLine2.vars.id }}">Address Line 2</label>
+                {{ form_widget(form.addressLine2, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="addressLine2Error"></div>
+            </div>
+
+            <!-- City -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.city.vars.id }}">City</label>
+                {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="cityError"></div>
+            </div>
+
+            <!-- Postal Code -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.postalCode.vars.id }}">Postal Code</label>
+                {{ form_widget(form.postalCode, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="postalCodeError"></div>
+            </div>
+
+            <!-- State -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.state.vars.id }}">State</label>
+                {{ form_widget(form.state, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="stateError"></div>
+            </div>
+
+            <!-- Country -->
+            <div class="col-sm-12 col-md-6 form-group">
+                <label for="{{ form.country.vars.id }}">Country</label>
+                {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+                <div class="invalid-feedback" id="countryError"></div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between my-4">
+          <!-- Back Button -->
+            <a href="{{ path('user_info') }}" class="btn btn-secondary">
+              <i class="fa fa-arrow-left"></i>   Back 
+            </a>
+
+            <!-- Next Button -->
+            <button type="submit" class="btn btn-primary">
+                 Next <i class="fa fa-arrow-right"></i>
+            </button>
+
+          
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to validate form fields
+            function validateForm() {
+                let isValid = true;
+
+                // Get form inputs
+                const addressLine1 = document.querySelector('#{{ form.addressLine1.vars.id }}');
+                const addressLine2 = document.querySelector('#{{ form.addressLine2.vars.id }}');
+                const city = document.querySelector('#{{ form.city.vars.id }}');
+                const postalCode = document.querySelector('#{{ form.postalCode.vars.id }}');
+                const state = document.querySelector('#{{ form.state.vars.id }}');
+                const country = document.querySelector('#{{ form.country.vars.id }}');
+
+                // Clear previous error messages
+                document.getElementById('addressLine1Error').innerText = '';
+                document.getElementById('addressLine2Error').innerText = '';
+                document.getElementById('cityError').innerText = '';
+                document.getElementById('postalCodeError').innerText = '';
+                document.getElementById('stateError').innerText = '';
+                document.getElementById('countryError').innerText = '';
+
+                // Validate Address Line 1
+                if (!addressLine1.value.trim()) {
+                    document.getElementById('addressLine1Error').innerText = 'Address Line 1 is required.';
+                    isValid = false;
+                }
+
+                // Validate City
+                if (!city.value.trim()) {
+                    document.getElementById('cityError').innerText = 'City is required.';
+                    isValid = false;
+                }
+
+                // Validate Postal Code
+                if (!postalCode.value.trim()) {
+                    document.getElementById('postalCodeError').innerText = 'Postal Code is required.';
+                    isValid = false;
+                }
+
+                // Validate State
+                if (!state.value.trim()) {
+                    document.getElementById('stateError').innerText = 'State is required.';
+                    isValid = false;
+                }
+
+                // Validate Country
+                if (!country.value.trim()) {
+                    document.getElementById('countryError').innerText = 'Please select a country.';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Attach event listeners
+            document.getElementById('nextButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent form submission
+                if (validateForm()) {
+                    document.querySelector('form').submit(); // Submit the form if validation passes
+                }
+            });
+
+            // Attach blur events to inputs for instant validation
+            document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('blur', () => {
+                    validateForm(); // Validate the form on blur (when the user clicks away)
+                });
+            });
+        });
+    </script>
+
+{% endblock %}
